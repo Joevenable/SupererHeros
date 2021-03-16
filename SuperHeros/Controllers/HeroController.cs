@@ -19,7 +19,8 @@ namespace SuperHeros.Controllers
         // GET: HeroController
         public ActionResult Index()
         {
-            return View();
+            var hero = _context.Heroes;
+            return View(hero);
         }
 
         // GET: HeroController/Details/5
@@ -54,16 +55,20 @@ namespace SuperHeros.Controllers
         // GET: HeroController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var hero = _context.Heroes.Find(id);
+            return View(hero);
         }
 
         // POST: HeroController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Hero heroes)
         {
             try
             {
+                _context.Heroes.Update(heroes);
+                _context.SaveChanges();
+                
                 return RedirectToAction(nameof(Index));
             }
             catch
