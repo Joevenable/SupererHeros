@@ -26,7 +26,8 @@ namespace SuperHeros.Controllers
         // GET: HeroController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var hero = _context.Heroes.Find(id);
+            return View(hero);
         }
 
         // GET: HeroController/Create
@@ -80,16 +81,19 @@ namespace SuperHeros.Controllers
         // GET: HeroController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var hero = _context.Heroes.Find(id);
+            return View(hero);
         }
 
         // POST: HeroController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Hero heroes)
         {
             try
             {
+                _context.Heroes.Remove(heroes);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
